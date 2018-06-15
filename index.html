@@ -166,15 +166,29 @@ require(["esri/map","esri/geometry/webMercatorUtils", "dojo/domReady!"], functio
    
   });
   estoy.addEventListener("click",(e)=>{
-    if ("geolocation" in navigator){      
-        navigator.geolocation.getCurrentPosition(
+	  
+    if ("geolocation" in navigator){   
+	    
+	    function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+    } else {
+        x.innerHTML = "Geolocation is not supported by this browser.";
+    }
+}
+	    
+function showPosition(position) {
+    console.log(position.coords.latitude);
+    
+}
+       /* navigator.geolocation.getCurrentPosition(
         (posicion)=>{
             if (navigator.geolocation.posicion=="undefined"){
                 alert("te he posicionado");
                 logitud.value = position.coords.longitude;
                 latitud.value = position.coords.latitude;
                 va_coordx.innerHTML=position.coords.latitude;
-                va_coordy.innerHTML=position.coords.longitude;
+                va_coordy.innerHTML=position.coords.longitude;*/
             }else{
                 alert("no es posible localizarte");
                 
