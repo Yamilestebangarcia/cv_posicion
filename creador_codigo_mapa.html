@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Mi primer mapa</title>
+	<link rel="stylesheet" href="https://js.arcgis.com/3.24/esri/css/esri.css">
+    <script src="https://js.arcgis.com/3.24/"></script>
+
+<style>
+  html, body, #map {
+    height: 100%;
+    padding: 0;
+    margin: 0;
+  }
+</style>
+
+</head>
+<body>
+	<h1>Este es mi primer mapa</h1>
+   <div id="mapa"></div>
+   <h2>Seleccina los valores para crear el codigo</h2>
+	 <form>
+	 	<select id="base">
+       <option value="topo" >topo</option>
+      <option value="streets" selected>streets</option>
+      <option value="satellite" >satellite</option>
+      <option value="hybrid" >hybrid</option>
+      <option value="topo" >topo</option>
+      <option value="gray" >gray</option>
+      <option value="dark-gray" >dark-gray</option>
+      <option value="oceans" >oceans</option>
+      <option value="national-geographic" >national-geographic</option>
+      <option value="terrain" >terrain</option>
+      <option value="osm" >osm</option>
+      <option value="dark-gray-vector" >dark-gray-vector</option>
+      <option value="gray-vector" >gray-vector</option>
+      <option value="streets-vector" >streets-vector</option>
+      <option value="streets-night-vector" >streets-night-vector</option>
+      <option value="streets-relief-vector" >streets-relief-vector</option>
+      <option value="streets-navigation-vector" >streets-navigation-vector</option>
+      <option value="topo-vector" >topo-vector</option>
+     </select>
+
+	 	<select id="zoom" >
+      <option value="1">zoom 1</option>
+      <option value="2">zoom 2</option>
+      <option value="3">zoom 3</option>
+      <option value="4">zoom 4</option>
+      <option value="5">zoom 5</option>
+      <option value="6">zoom 6</option>
+      <option value="7">zoom 7</option>
+      <option value="8">zoom 8</option>
+      <option value="9">zoom 9</option>
+      <option value="10">zoom 10</option>
+      <option value="11">zoom 11</option>
+      <option value="12"selected>zoom 12</option>
+      <option value="13">zoom 13</option>
+      <option value="14">zoom 14</option>
+      <option value="15">zoom 15</option>
+      <option value="16">zoom 16</option>
+      <option value="17">zoom 17</option>
+      <option value="18">zoom 18</option>
+      <option value="19">zoom 19</option>
+      <option value="20">zoom 20</option>
+     </select>
+     <label for="logitud">Longitud</label>
+     <input id="logitud" type="text" value="-3.60" readonly>
+     <label for="latitud">Latitud</label>
+     <input id="latitud" type="text" value="37.17" readonly>
+     <label for="logo">Logo</label>
+     <input type="checkbox" id="logo" checked>
+     <input type="button" id="estoy" value="¿Donde estoy?" >
+   </form>
+   <h2>Codigo Del Mapa</h2>
+   <pre>
+    <code>
+
+&lt;!DOCTYPE html&gt;
+  &lt;html&gt;
+    &lt;head&gt;
+      &lt;meta charset=&quot;utf-8&quot; /&gt; 
+      &lt;meta http-equiv=&quot;X-UA-Compatible&quot;content=&quot;IE=edge&quot;&gt; 
+      &lt;title&gt;Mi Primer Mapa&lt;/title&gt; 
+      &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,initial-scale=1&quot;&gt; 
+      &lt;link rel=&quot;stylesheet&quot; href=&quot;https://js.arcgis.com/3.24/esri/css/esri.css&quot;/&gt;
+      &lt;script src=&quot;https://js.arcgis.com/3.24/&quot;&gt;&lt;/script&gt;
+      
+      &lt;style&gt;
+        html, body, #mapa{ 
+          height: 100%; 
+          padding: 0; 
+          margin: 0; 
+        }
+      &lt;/style&gt;
+
+    &lt;/head&gt; 
+    &lt;body&gt; 
+         &lt;h1&gt;Este es mi primer mapa&lt;/h1&gt;
+         &lt;div id=&quot;mapa&quot;&gt;&lt;/div&gt;
+         
+         &lt;script&gt;
+
+          require([
+             &quot;esri/map&quot;,
+             &quot;dojo/domReady!&quot;
+             ],function (Map) {
+                var mapa = new Map(&quot;mapa&quot;,{
+                   basemap: &quot;<span id="va_base">streets</span>&quot;,
+                   center: [<span id="va_coordx">-3.60</span> ,<span id="va_coordy">37.17</span> ],
+                   zoom: <span id="va_zoom">12</span>,
+                   logo:<span id="va_logo">true</span>
+                }); 
+              });
+
+        &lt;/script&gt;
+
+    &lt;/body&gt; 
+  &lt;/html&gt;
+
+    </code>
+   </pre>
+   
+  <script>
+  //codigo del mapa
+require(["esri/map","esri/geometry/webMercatorUtils", "dojo/domReady!"], function(Map,webMercatorUtils) {
+
+  var base = document.getElementById("base");
+  var zoom = document.getElementById("zoom");
+  var base = document.getElementById("base");
+  var zoom = document.getElementById("zoom");
+  var estoy = document.getElementById("estoy");
+  var logitud = document.getElementById("logitud");
+  var latitud = document.getElementById("latitud");
+  var logomapa= document.getElementsByClassName("logo-med");
+  var logo = document.getElementById("logo");
+  var valormapabase = "streets";
+  var valorzoom = 12;
+
+  function coordenadas(e) {
+    var logylat=webMercatorUtils.xyToLngLat(e.mapPoint.x,e.mapPoint.y);
+    console.log( logylat[0] +"///"+ logylat[1]);
+    logitud.value=logylat[0];
+    latitud.value=logylat[1];
+    va_coordx.innerHTML=logylat[0]
+    va_coordy.innerHTML=logylat[1]
+  }
+
+  base.addEventListener("click", (e) => { 
+     valormapabase=base.value;
+     mapa.setBasemap(valormapabase);
+     va_base.innerHTML=valormapabase;
+  });
+
+  zoom.addEventListener("click", (e) => {
+    valorzoom = Number(zoom.value);
+    mapa.setZoom(valorzoom);
+    va_zoom.innerHTML = valorzoom;
+  });
+
+ logo.addEventListener("click", (e) => { 
+    valorlogo=logo.checked;
+    console.log(valorlogo);
+    va_logo.innerHTML = valorlogo;
+    valorlogo ? logomapa[0].style.visibility ="visible":logomapa[0].style.visibility="hidden";
+   
+  });
+  estoy.addEventListener("click",(e)=>{
+    if ("geolocation" in navigator){      
+        navigator.geolocation.getCurrentPosition(
+        (posicion)=>{
+            if (navigator.geolocation.posicion=="undefined"){
+                alert("te he posicionado");
+                logitud.value = position.coords.longitude;
+                latitud.value = position.coords.latitude;
+                va_coordx.innerHTML=position.coords.latitude;
+                va_coordy.innerHTML=position.coords.longitude;
+            }else{
+                alert("no es posible localizarte");
+                
+            };
+        });
+    }else{
+        alert("no es posible localizarte");
+    }
+  });
+
+  //mapa
+
+
+    var mapa = new Map("mapa", {
+     basemap: valormapabase,
+    center: [-3.60, 37.17],
+     zoom: valorzoom,
+     logo:true
+     
+  });
+
+mapa.on("click",coordenadas);
+});
+/*
+  require(["esri/map", "dojo/domReady!"], function (Map) {
+    var mapa = new Map("mapa", {
+      basemap: "topo",
+      center: [-3.60, 37.17],
+      zoom: 13
+    });
+  });*/
+  </script>
+</body>
+</html>
+
