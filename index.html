@@ -165,26 +165,24 @@ require(["esri/map","esri/geometry/webMercatorUtils", "dojo/domReady!"], functio
     valorlogo ? logomapa[0].style.visibility ="visible":logomapa[0].style.visibility="hidden";
    
   });
-  
-    function localizacion() {
-
-        if ("geolocation" in navigator){ 
-            navigator.geolocation.getCurrentPosition( (posicion)=>{ 
-                if (navigator.geolocation.posicion =="undefined"){
-                    alert("te he posicionado"); 
-                    logitud.value = position.coords.longitude; 
-                    latitud.value = position.coords.latitude; 
-                    va_coordx.innerHTML=position.coords.latitude;
-                    va_coordy.innerHTML=position.coords.longitude; 
-                }else{ 
-                    alert("no posible"); 
-                }; 
-            });
-        }else{ alert("no es posible localizarte"); }
-         
-    }
-
- estoy.addEventListener("click",(e)=>{ localizacion() });
+  estoy.addEventListener("click",(e)=>{
+    if ("geolocation" in navigator) {
+    navigator.geolocation.getCurrentPosition(
+        (position) => {
+            alert("te he localizado")
+            console.log(position.coords.latitude);
+            logitud.value = position.coords.longitude;
+            latitud.value = position.coords.latitude;
+            va_coordx.innerHTML=position.coords.longitude;
+            va_coordy.innerHTML=position.coords.latitude;
+        });
+} else {
+    /* la geolocalización NO está disponible */
+    alert("no te puedo localizar");
+   
+}
+   
+  });
 
   //mapa
 
